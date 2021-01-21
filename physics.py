@@ -9,16 +9,7 @@ class vector3D:
         self.normalize()
 
     def __str__(self):
-        a = {
-            "x": self._x,
-            "y": self._y,
-            "z": self._z,
-            "norm_x": self._norm_x,
-            "norm_y": self._norm_y,
-            "norm_z": self._norm_z,
-            "length": self.get_length()
-        }
-        return a
+        return f"x: {self._x} ; y: {self._y} ; z: {self._z} \n norm_x: {self._norm_x} ; norm_y: {self._norm_y} ; norm_z: {self._norm_z} \n length: {self.get_length()}"
     
     def __iadd__(self, other):
         if type(other) is vector3D:
