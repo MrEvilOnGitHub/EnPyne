@@ -39,11 +39,14 @@ class vector3D:
             raise TypeError()
 
     def __idiv__(self, other):
-        if type(other) is int or type(other):
-            return vector3D(
-                x=self._x/other,
-                y=self._y/other,
-                z=self._z/other)
+        if type(other) is int or type(other) is float:
+            if other != 0 or other != 0.0:
+                return vector3D(
+                    x=self._x/other,
+                    y=self._y/other,
+                    z=self._z/other)
+            else:
+                raise ZeroDivisionError
         else:
             raise TypeError()
 

@@ -1,3 +1,5 @@
+import definitions
+
 class scene:
     def __init__(self):
         pass # modify root to fit to new object inheriting from this class
@@ -6,13 +8,11 @@ class scene:
     children_state = [] # State of each child, index-linked
 
     def new_child(self, child, initial_state):
+        pass
 
-        """"""
-        length_children = len(self.children)
-        length_state = len(self.children_state)
-        
-
-    class root:
+    class child:
         def __init__(self):
             pass
+
+        position = definitions.vector3D(0,0,0)
         
