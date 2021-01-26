@@ -144,12 +144,16 @@ class definitions:
 class object_tree:
     class scene3D:
         def __init__(self):
-            pass # modify root to fit to new object inheriting from this class
+            self.events = event_handler
 
         children = [] # List of children objects
         children_state = [] # State of each child, index-linked
 
-        def new_child(self, child, initial_state):
+        def link_child(self, child, initial_state):
+            self.children.append(child)
+            self.children_state.append(initial_state)
+
+        def unlink_child(self, child):
             pass
 
         class child:
