@@ -4,7 +4,13 @@ def __init__(self):
     pass
 
 class definitions:
+    """
+    A class containing definitions for various other elements used in this engine
+    """
     class vector3D:
+        """
+        A representation of a 3d vector
+        """
         # magic methods
         def __init__(self, x=float(1.0), y=float(0.0), z=float(0.0)):
             self.set_x(x)
@@ -143,6 +149,9 @@ class definitions:
 
 class object_tree:
     class scene3D:
+        """
+        Base class for scenes with 3d objects. Includes an event handler
+        """
         def __init__(self):
             self.events = event_handler
 
@@ -150,11 +159,20 @@ class object_tree:
         children_state = [] # State of each child, index-linked
 
         def link_child(self, child, initial_state):
+            """
+            Link a child object to this scene
+            """
             self.children.append(child)
             self.children_state.append(initial_state)
+            return self.children.index(child)
 
         def unlink_child(self, child):
-            pass
+            """
+            Unlink a child object from this scene
+            """
+            index = self.children.index(child)
+            self.children.pop(index)
+            self.children_state.pop(index)
 
         class child:
             def __init__(self):
@@ -164,6 +182,10 @@ class object_tree:
             viewing_direction = definitions.vector3D
 
 class event_handler:
+    """
+    Event handler system. Usually it shouldn't be neccessary to create a seperate instance of this
+    since every scene assigns a new instance of it on initialisation
+    """
     pass
     # Tick system:
     # Global & live ticks
