@@ -17,32 +17,32 @@ class definitions:
             self.normalize()
 
         def __str__(self):
-            return f"x: {self._x} ; y: {self._y} ; z: {self._z} \n norm_x: {self._norm_x} ; norm_y: {self._norm_y} ; norm_z: {self._norm_z} \n length: {self.get_length()}"
+            return f"x: {self.x} ; y: {self.y} ; z: {self.z} \n norm_x: {self.norm_x} ; norm_y: {self.norm_y} ; norm_z: {self.norm_z} \n length: {self.get_length()}"
 
         def __iadd__(self, other):
             if type(other) is definitions.vector3D:
                 return definitions.vector3D(
-                    x=self._x+other._x,
-                    y=self._y+other._y,
-                    z=self._z+other._z)
+                    x=self.x+other.x,
+                    y=self.y+other.y,
+                    z=self.z+other.z)
             else:
                 raise TypeError("Vectoraddition can only be performed with two vectors")
 
         def __isub__(self, other):
             if type(other) is definitions.vector3D:
                 return definitions.vector3D(
-                    x=self._x-other._x,
-                    y=self._y-other._y,
-                    z=self._z-other._z)
+                    x=self.x-other.x,
+                    y=self.y-other.y,
+                    z=self.z-other.z)
             else:
                 raise TypeError("Vectorsubstraction can only be performed with two vectors")
 
         def __imul__(self, other):
             if type(other) is int or type(other) is float:
                 return definitions.vector3D(
-                    x=self._x*other,
-                    y=self._y*other,
-                    z=self._z*other)
+                    x=self.x*other,
+                    y=self.y*other,
+                    z=self.z*other)
             else:
                 raise TypeError()
 
@@ -50,9 +50,9 @@ class definitions:
             if type(other) is int or type(other) is float:
                 if other != 0 or other != 0.0:
                     return definitions.vector3D(
-                        x=self._x/other,
-                        y=self._y/other,
-                        z=self._z/other)
+                        x=self.x/other,
+                        y=self.y/other,
+                        z=self.z/other)
                 else:
                     raise ZeroDivisionError
             else:
@@ -61,90 +61,90 @@ class definitions:
         def __add__(self, other):
             if type(other) is definitions.vector3D:
                 return definitions.vector3D(
-                    x=self._x+other._x,
-                    y=self._y+other._y,
-                    z=self._z+other._z)
+                    x=self.x+other.x,
+                    y=self.y+other.y,
+                    z=self.z+other.z)
             else:
                 raise TypeError("Vectoraddition can only be performed with two vectors")
 
         def __sub__(self, other):
             if type(other) is definitions.vector3D:
                 return definitions.vector3D(
-                    x=self._x-other._x,
-                    y=self._y-other._y,
-                    z=self._z-other._z)
+                    x=self.x-other.x,
+                    y=self.y-other.y,
+                    z=self.z-other.z)
             else:
                 raise TypeError("Vectorsubstraction can only be performed with two vectors")
 
         def __mul__(self, other):
             if type(other) is int or type(other) is float:
                 return definitions.vector3D(
-                    x=self._x*other,
-                    y=self._y*other,
-                    z=self._z*other)
+                    x=self.x*other,
+                    y=self.y*other,
+                    z=self.z*other)
             else:
                 raise TypeError()
 
         def __truediv__(self, other):
             if type(other) is int or type(other):
                 return definitions.vector3D(
-                    x=self._x/other,
-                    y=self._y/other,
-                    z=self._z/other)
+                    x=self.x/other,
+                    y=self.y/other,
+                    z=self.z/other)
             else:
                 raise TypeError()
 
         # Get'er and Set'er
         def set_x(self, value):
             if type(value) is int or type(value) is float:
-                self._x = value
+                self.x = value
                 self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
         def set_y(self, value):
             if type(value) is int or type(value) is float:
-                self._y = value
+                self.y = value
                 self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
         def set_z(self, value):
             if type(value) is int or type(value) is float:
-                self._z = value
+                self.z = value
                 self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
         def get_x(self):
-            return self._x
+            return self.x
 
         def get_y(self):
-            return self._y
+            return self.y
 
         def get_z(self):
-            return self._z
+            return self.z
 
         def get_norm_x(self):
-            return self._norm_x
+            return self.norm_x
 
         def get_norm_y(self):
-            return self._norm_y
+            return self.norm_y
 
         def get_norm_z(self):
-            return self._norm_z
+            return self.norm_z
 
         # Get length of vector
         def get_length(self):
-            return math.sqrt((self._x * self._x) + (self._y * self._y) + (self._z * self._z))
+            return math.sqrt((self.x * self.x) + (self.y * self.y) + (self.z * self.z))
 
         # Normalizer (set vector length to 1)
         def normalize(self):
             length = self.get_length()
             if length != 0:
-                self._norm_x = self._x / length
-                self._norm_y = self._y / length
-                self._norm_z = self._z / length
+                self.norm_x = self.x / length
+                self.norm_y = self.y / length
+                self.norm_z = self.z / length
             else:
                 raise ZeroDivisionError
 
@@ -176,6 +176,9 @@ class object_tree:
             self.children_state.pop(index)
 
     class child3D:
+        """
+        General class for 3D objects
+        """
         def __init__(self, position=definitions.vector3D, direction=definitions.vector3D):
             self.position = position
             self.direction = direction
