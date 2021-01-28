@@ -1,9 +1,6 @@
 import math
 import OpenGL
 
-def __init__(self):
-    pass
-
 class definitions:
     """
     A class containing definitions for various other elements used in this engine
