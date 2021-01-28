@@ -1,4 +1,5 @@
 import math
+import OpenGL
 
 def __init__(self):
     pass
@@ -100,18 +101,21 @@ class definitions:
         def set_x(self, value):
             if type(value) is int or type(value) is float:
                 self._x = value
+                self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
         def set_y(self, value):
             if type(value) is int or type(value) is float:
                 self._y = value
+                self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
         def set_z(self, value):
             if type(value) is int or type(value) is float:
                 self._z = value
+                self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
@@ -174,12 +178,31 @@ class object_tree:
             self.children.pop(index)
             self.children_state.pop(index)
 
-        class child:
-            def __init__(self):
-                pass
+    class child3D:
+        def __init__(self, position=definitions.vector3D, direction=definitions.vector3D):
+            self.position = position
+            self.direction = direction
 
-            position = definitions.vector3D
-            viewing_direction = definitions.vector3D
+        position = definitions.vector3D
+        direction = definitions.vector3D
+        children = []
+        children_state = []
+
+        def link_child(self, child, initial_state):
+            """
+            Link a child object to this scene
+            """
+            self.children.append(child)
+            self.children_state.append(initial_state)
+            return self.children.index(child)
+
+        def unlink_child(self, child):
+            """
+            Unlink a child object from this scene
+            """
+            index = self.children.index(child)
+            self.children.pop(index)
+            self.children_state.pop(index)
 
 class event_handler:
     """
