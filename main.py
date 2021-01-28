@@ -1,10 +1,40 @@
 import math
-import OpenGL
+#import OpenGL Not used so far. Uncomment when adding a renderer class
 
 class definitions:
     """
     A class containing definitions for various other elements used in this engine
     """
+    class vector2D:
+        """
+        A representation of a 2D vector
+        """
+        
+        # variables
+        x = float(1.0)
+        y = float(0.0)
+        norm_x = float(1)
+        norm_y = float(0)
+
+        # Magic methods
+        def __init__(self, x=1, y=0):
+                if x is float or x is int and y is float or y is int:
+                    self.x = x
+                    self.y = y
+                    self.normalize()
+
+        # Other methods
+        def normalize(self):
+            length = self.get_length()
+            if length != 0:
+                self.norm_x = self.x / length
+                self.norm_y = self.y / length
+            else:
+                raise ZeroDivisionError
+
+        def get_length(self):
+            return math.sqrt(self.x ** 2 + self.y ** 2)
+
     class vector3D:
         """
         A representation of a 3d vector
