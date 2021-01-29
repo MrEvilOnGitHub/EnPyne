@@ -1,5 +1,5 @@
 import math
-#import OpenGL Not used so far. Uncomment when adding a renderer class
+#import OpenGL Not used so far.         Uncomment when adding a renderer class
 
 class definitions:
     """
@@ -22,6 +22,76 @@ class definitions:
                     self.x = x
                     self.y = y
                     self.normalize()
+        
+        def __str__(self):
+            return f"x: {self.x} ; y: {self.y} \n norm_x: {self.norm_x} ; norm_y: {self.norm_y} \n length: {self.get_length()}"
+
+        def __iadd__(self, other):
+            if type(other) is definitions.vector2D:
+                return definitions.vector2D(
+                    x=self.x+other.x,
+                    y=self.y+other.y)
+            else:
+                raise TypeError("Vectoraddition can only be performed with two vectors")
+
+        def __isub__(self, other):
+            if type(other) is definitions.vector2D:
+                return definitions.vector2D(
+                    x=self.x-other.x,
+                    y=self.y-other.y)
+            else:
+                raise TypeError("Vectorsubstraction can only be performed with two vectors")
+
+        def __imul__(self, other):
+            if type(other) is int or type(other) is float:
+                return definitions.vector2D(
+                    x=self.x*other,
+                    y=self.y*other)
+            else:
+                raise TypeError()
+
+        def __idiv__(self, other):
+            if type(other) is int or type(other) is float:
+                if other != 0 or other != 0.0:
+                    return definitions.vector2D(
+                        x=self.x/other,
+                        y=self.y/other)
+                else:
+                    raise ZeroDivisionError
+            else:
+                raise TypeError()
+
+        def __add__(self, other):
+            if type(other) is definitions.vector2D:
+                return definitions.vector2D(
+                    x=self.x+other.x,
+                    y=self.y+other.y)
+            else:
+                raise TypeError("Vectoraddition can only be performed with two vectors")
+
+        def __sub__(self, other):
+            if type(other) is definitions.vector2D:
+                return definitions.vector2D(
+                    x=self.x-other.x,
+                    y=self.y-other.y)
+            else:
+                raise TypeError("Vectorsubstraction can only be performed with two vectors")
+
+        def __mul__(self, other):
+            if type(other) is int or type(other) is float:
+                return definitions.vector2D(
+                    x=self.x*other,
+                    y=self.y*other)
+            else:
+                raise TypeError()
+
+        def __truediv__(self, other):
+            if type(other) is int or type(other):
+                return definitions.vector2D(
+                    x=self.x/other,
+                    y=self.y/other)
+            else:
+                raise TypeError()
 
         # Other methods
         def normalize(self):
@@ -34,6 +104,33 @@ class definitions:
 
         def get_length(self):
             return math.sqrt(self.x ** 2 + self.y ** 2)
+
+        # Get'er and Set'er
+        def set_x(self, value):
+            if type(value) is int or type(value) is float:
+                self.x = value
+                self.normalize()
+            else:
+                raise ValueError(f"Expected float or int, received {type(value)} instead")
+
+        def set_y(self, value):
+            if type(value) is int or type(value) is float:
+                self.y = value
+                self.normalize()
+            else:
+                raise ValueError(f"Expected float or int, received {type(value)} instead")
+
+        def get_x(self):
+            return self.x
+
+        def get_y(self):
+            return self.y
+
+        def get_norm_x(self):
+            return self.norm_x
+
+        def get_norm_y(self):
+            return self.norm_y
 
     class vector3D:
         """
@@ -215,6 +312,61 @@ class object_tree:
 
         position = definitions.vector3D
         direction = definitions.vector3D
+        children = []
+        children_state = []
+
+        def link_child(self, child, initial_state):
+            """
+            Link a child object to this scene
+            """
+            self.children.append(child)
+            self.children_state.append(initial_state)
+            return self.children.index(child)
+
+        def unlink_child(self, child):
+            """
+            Unlink a child object from this scene
+            """
+            index = self.children.index(child)
+            self.children.pop(index)
+            self.children_state.pop(index)
+
+    class scene2D:
+        """
+        Base class for scenes with 2d objects. Includes an event handler
+        """
+        def __init__(self):
+            self.events = event_handler
+
+        children = [] # List of children objects
+        children_state = [] # State of each child, index-linked
+
+        def link_child(self, child, initial_state):
+            """
+            Link a child object to this scene
+            """
+            self.children.append(child)
+            self.children_state.append(initial_state)
+            return self.children.index(child)
+
+        def unlink_child(self, child):
+            """
+            Unlink a child object from this scene
+            """
+            index = self.children.index(child)
+            self.children.pop(index)
+            self.children_state.pop(index)
+
+    class child2D:
+        """
+        General class for 3D objects
+        """
+        def __init__(self, position=definitions.vector2D, direction=definitions.vector2D):
+            self.position = position
+            self.direction = direction
+
+        position = definitions.vector2D
+        direction = definitions.vector2D
         children = []
         children_state = []
 
