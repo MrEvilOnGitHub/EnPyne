@@ -9,44 +9,38 @@ class definitions:
         """
         A representation of a 2D vector
         """
-        
-        # variables
-        x = float(1.0)
-        y = float(0.0)
-        norm_x = float(1)
-        norm_y = float(0)
 
         # Magic methods
         def __init__(self, x=1, y=0):
                 if x is float or x is int and y is float or y is int:
-                    self.x = x
-                    self.y = y
+                    self.__x = x
+                    self.__y = y
                     self.normalize()
         
         def __str__(self):
-            return f"x: {self.x} ; y: {self.y} \n norm_x: {self.norm_x} ; norm_y: {self.norm_y} \n length: {self.get_length()}"
+            return f"x: {self.__x} ; y: {self.__y} \n norm_x: {self.__norm_x} ; norm_y: {self.__norm_y} \n length: {self.get_length()}"
 
         def __iadd__(self, other):
             if type(other) is definitions.vector2D:
                 return definitions.vector2D(
-                    x=self.x+other.x,
-                    y=self.y+other.y)
+                    x=self.__x+other.x,
+                    y=self.__y+other.y)
             else:
                 raise TypeError("Vectoraddition can only be performed with two vectors")
 
         def __isub__(self, other):
             if type(other) is definitions.vector2D:
                 return definitions.vector2D(
-                    x=self.x-other.x,
-                    y=self.y-other.y)
+                    x=self.__x-other.x,
+                    y=self.__y-other.y)
             else:
                 raise TypeError("Vectorsubstraction can only be performed with two vectors")
 
         def __imul__(self, other):
             if type(other) is int or type(other) is float:
                 return definitions.vector2D(
-                    x=self.x*other,
-                    y=self.y*other)
+                    x=self.__x*other,
+                    y=self.__y*other)
             else:
                 raise TypeError()
 
@@ -54,8 +48,8 @@ class definitions:
             if type(other) is int or type(other) is float:
                 if other != 0 or other != 0.0:
                     return definitions.vector2D(
-                        x=self.x/other,
-                        y=self.y/other)
+                        x=self.__x/other,
+                        y=self.__y/other)
                 else:
                     raise ZeroDivisionError
             else:
@@ -64,32 +58,32 @@ class definitions:
         def __add__(self, other):
             if type(other) is definitions.vector2D:
                 return definitions.vector2D(
-                    x=self.x+other.x,
-                    y=self.y+other.y)
+                    x=self.__x+other.x,
+                    y=self.__y+other.y)
             else:
                 raise TypeError("Vectoraddition can only be performed with two vectors")
 
         def __sub__(self, other):
             if type(other) is definitions.vector2D:
                 return definitions.vector2D(
-                    x=self.x-other.x,
-                    y=self.y-other.y)
+                    x=self.__x-other.x,
+                    y=self.__y-other.y)
             else:
                 raise TypeError("Vectorsubstraction can only be performed with two vectors")
 
         def __mul__(self, other):
             if type(other) is int or type(other) is float:
                 return definitions.vector2D(
-                    x=self.x*other,
-                    y=self.y*other)
+                    x=self.__x*other,
+                    y=self.__y*other)
             else:
                 raise TypeError()
 
         def __truediv__(self, other):
             if type(other) is int or type(other):
                 return definitions.vector2D(
-                    x=self.x/other,
-                    y=self.y/other)
+                    x=self.__x/other,
+                    y=self.__y/other)
             else:
                 raise TypeError()
 
@@ -97,40 +91,53 @@ class definitions:
         def normalize(self):
             length = self.get_length()
             if length != 0:
-                self.norm_x = self.x / length
-                self.norm_y = self.y / length
+                self.__norm_x = self.__x / length
+                self.__norm_y = self.__y / length
             else:
                 raise ZeroDivisionError
 
         def get_length(self):
-            return math.sqrt(self.x ** 2 + self.y ** 2)
+            return math.sqrt(self.__x ** 2 + self.__y ** 2)
 
         # Get'er and Set'er
-        def set_x(self, value):
+        @property
+        def __x(self):
+            return self.__x
+
+        @property
+        def __y(self):
+            return self.__y
+
+        @property
+        def __norm_x(self):
+            return self.__norm_x
+
+        @property
+        def __norm_y(self):
+            return self.__norm_y
+        
+        @__x.setter
+        def __x(self, value):
             if type(value) is int or type(value) is float:
-                self.x = value
+                self.__x = value
+                self.normalize()
+            else:
+                raise ValueError(f"Expected float or int, received {type(value)} instead")
+        
+        @__y.setter
+        def __y(self, value):
+            if type(value) is int or type(value) is float:
+                self.__y = value
                 self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
 
-        def set_y(self, value):
-            if type(value) is int or type(value) is float:
-                self.y = value
-                self.normalize()
-            else:
-                raise ValueError(f"Expected float or int, received {type(value)} instead")
 
-        def get_x(self):
-            return self.x
-
-        def get_y(self):
-            return self.y
-
-        def get_norm_x(self):
-            return self.norm_x
-
-        def get_norm_y(self):
-            return self.norm_y
+        # variables
+        __x = float(1.0)
+        __y = float(0.0)
+        __norm_x = float(1)
+        __norm_y = float(0)
 
     class vector3D:
         """
@@ -359,9 +366,9 @@ class object_tree:
 
     class child2D:
         """
-        General class for 3D objects
+        General class for 2D objects
         """
-        def __init__(self, position=definitions.vector2D, direction=definitions.vector2D):
+        def __init__(self, position=definitions.vector2D, direction=definitions.vector2D) -> None:
             self.position = position
             self.direction = direction
 
@@ -369,16 +376,15 @@ class object_tree:
         direction = definitions.vector2D
         children = []
         children_state = []
+        a = None # Type of the child
 
-        def link_child(self, child, initial_state):
-            """
-            Link a child object to this scene
-            """
-            self.children.append(child)
-            self.children_state.append(initial_state)
-            return self.children.index(child)
+        # Decorator for new sub-childs to this child
+        def link(self,obj=None,*,state=0) -> object:
+            self.children.append(obj)
+            self.children_state.append(state)
+            return obj
 
-        def unlink_child(self, child):
+        def unlink_child(self, child) -> None:
             """
             Unlink a child object from this scene
             """
@@ -406,6 +412,12 @@ class event_handler:
     # - Input: Triggers on User input when not sleeping
     # - Engine: Events to keep the engine working (This includes rendering, physics etc)
     # - Object: Events asigned to objects that don't fit into any of the above categories
+
+class renderer2D:
+    """
+    Base rendering class for 2d objects
+    """
+    pass
 
 # exceptions
 
