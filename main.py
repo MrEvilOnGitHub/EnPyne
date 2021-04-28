@@ -1,4 +1,5 @@
 import math
+import types
 #import OpenGL Not used so far.         Uncomment when adding a renderer class
 
 class definitions:
@@ -12,11 +13,11 @@ class definitions:
 
         # Magic methods
         def __init__(self, x=1, y=0):
-                if x is float or x is int and y is float or y is int:
+                if x is float or int and y is float or int:
                     self.__x = x
                     self.__y = y
                     self.normalize()
-        
+
         def __str__(self):
             return f"x: {self.__x} ; y: {self.__y} \n norm_x: {self.__norm_x} ; norm_y: {self.__norm_y} \n length: {self.get_length()}"
 
@@ -115,7 +116,7 @@ class definitions:
         @property
         def __norm_y(self):
             return self.__norm_y
-        
+
         @__x.setter
         def __x(self, value):
             if type(value) is int or type(value) is float:
@@ -123,7 +124,7 @@ class definitions:
                 self.normalize()
             else:
                 raise ValueError(f"Expected float or int, received {type(value)} instead")
-        
+
         @__y.setter
         def __y(self, value):
             if type(value) is int or type(value) is float:
@@ -397,21 +398,20 @@ class event_handler:
     Event handler system. Usually it shouldn't be neccessary to create a seperate instance of this
     since every scene assigns a new instance of it on initialisation
     """
-    pass
-    # Tick system:
-    # Global & live ticks
-    # - Global try to update every 1/nth of a seconds
-    # - live try to update as often as possible
-    # 
-    # Events are divided into multiple categories:
-    # - Active: Update every tick (global or live)
-    # - Once: Perform event once, then set it to sleep
-    # - Sleep: don't activate unless explicitly called
-    # 
-    # Sub-categories:
-    # - Input: Triggers on User input when not sleeping
-    # - Engine: Events to keep the engine working (This includes rendering, physics etc)
-    # - Object: Events asigned to objects that don't fit into any of the above categories
+    class input_events:
+        def add_event(self, func, *, event="key_pressed") -> types.MethodType:
+            self._events.append(func)
+            self._event_triggers.append(event)
+            return func
+
+        def on_event(self):
+            pass
+
+        _events = []
+        _event_triggers = []
+
+    def __init__(self):
+        self.user_events = self.input_events
 
 class renderer2D:
     """
